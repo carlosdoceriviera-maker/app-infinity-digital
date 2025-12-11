@@ -5,30 +5,24 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Heart, ShoppingCart } from 'lucide-react';
-import { Product } from '@/lib/types';
-import { useCart } from '@/contexts/cart-context';
-import { useWishlist } from '@/contexts/wishlist-context';
+
+interface Product {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  category: string;
+  images: string[];
+}
 
 interface ProductCardProps {
   product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { addToCart } = useCart();
-  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
-  const inWishlist = isInWishlist(product.id);
-
-  const handleWishlistToggle = () => {
-    if (inWishlist) {
-      removeFromWishlist(product.id);
-    } else {
-      addToWishlist(product);
-    }
-  };
-
   return (
     <Card className="group overflow-hidden">
-      <div className="aspect-square overflow-hidden relative">
+      <div className="aspect-square overflow-hidden">
         <Link href={`/products/${product.id}`}>
           <Image
             src={product.images[0] || '/placeholder-product.jpg'}
@@ -38,11 +32,6 @@ export function ProductCard({ product }: ProductCardProps) {
             className="h-full w-full object-cover transition-transform group-hover:scale-105"
           />
         </Link>
-        {product.is_premium && (
-          <div className="absolute top-2 right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-            PREMIUM
-          </div>
-        )}
       </div>
       <CardContent className="p-4">
         <div className="space-y-2">
@@ -63,16 +52,12 @@ export function ProductCard({ product }: ProductCardProps) {
             €{product.price.toFixed(2)}
           </span>
           <div className="flex gap-2">
-            <Button
-              variant={inWishlist ? "default" : "outline"}
-              size="sm"
-              onClick={handleWishlistToggle}
-            >
-              <Heart className={`h-4 w-4 ${inWishlist ? 'fill-current' : ''}`} />
+            <Button variant="outline" size="sm">
+              <Heart className="h-4 w-4" />
             </Button>
-            <Button size="sm" onClick={() => addToCart(product)}>
+            <Button size="sm">
               <ShoppingCart className="h-4 w-4 mr-2" />
-              Adicionar
+              Comprar
             </Button>
           </div>
         </div>

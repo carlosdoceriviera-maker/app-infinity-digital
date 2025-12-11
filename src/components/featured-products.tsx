@@ -73,7 +73,7 @@ export function FeaturedProducts() {
 
   useEffect(() => {
     async function fetchProducts() {
-      // Se Supabase não estiver configurado, usar produtos mock
+      // Se Supabase não estiver configurado, usar produtos mock imediatamente
       if (!isSupabaseConfigured || !supabase) {
         setProducts(mockProducts);
         setLoading(false);
@@ -88,13 +88,12 @@ export function FeaturedProducts() {
           .limit(6);
 
         if (error) {
-          console.error('Error fetching products:', error);
           setProducts(mockProducts);
         } else {
           setProducts(data || mockProducts);
         }
-      } catch (err) {
-        console.error('Error:', err);
+      } catch {
+        // Em caso de erro de rede, usar produtos mock silenciosamente
         setProducts(mockProducts);
       }
       

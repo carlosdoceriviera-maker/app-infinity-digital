@@ -7,8 +7,7 @@ import "./globals.css";
 import "../lib/fonts";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
-import { CartProvider } from "@/contexts/cart-context";
-import { WishlistProvider } from "@/contexts/wishlist-context";
+import { Navbar } from "@/components/layout/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,12 +43,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <CartProvider>
-            <WishlistProvider>
-              {children}
-              <Toaster />
-            </WishlistProvider>
-          </CartProvider>
+          <Navbar />
+          {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
